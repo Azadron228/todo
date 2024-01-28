@@ -11,13 +11,17 @@ class Task extends Model
 
     protected $fillable = [
         'text',
-        'img',
-        'thumb',
+        'attachment',
         'status'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class);
     }
 }

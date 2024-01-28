@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ImageController;
+use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,10 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['auth']], function () {
 
     Route::resource('/task', TaskController::class);
-    Route::post('/fgh', [TaskController::class, 'store']);
 
-    Route::post('/upload_image', [ImageController::class, 'imageUpload'])->name('todo.upload_image');
-    Route::get('/remove_image/{id?}', [ImageController::class, 'removeImage'])->name('todo.remove_image');
+    Route::post('/task/{task}/attachments', [AttachmentController::class, 'upload'])->name('attachments.upload');
+    Route::get('/attachments/{attachment}', [AttachmentController::class, 'download'])->name('attachments.download');
 });
-
 require __DIR__ . '/auth.php';

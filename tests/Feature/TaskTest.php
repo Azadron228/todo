@@ -26,8 +26,7 @@ class TaskTest extends TestCase
             'data' => [
                 [
                     'text' => $task->text,
-                    'image' => $task->img,
-                    'thumb' => $task->thumb,
+                    'attachment' => $task->attachment,
                 ],
             ],
         ]);
@@ -55,8 +54,7 @@ class TaskTest extends TestCase
             'data' => [
                 'text' => 'exampletext',
                 'status' => 'inProgress',
-                'image' => '',
-                'thumb' => '',
+                'attachment' => '',
             ],
         ]);
 

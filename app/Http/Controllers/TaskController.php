@@ -27,8 +27,7 @@ class TaskController extends Controller
     {
         $task = $request->user()->tasks()->create([
             'text' => $request->text,
-            'img' => '',
-            'thumb' => '',
+            'attachment' => '',
             'status' => 'inProgress',
         ]);
 
@@ -59,10 +58,9 @@ class TaskController extends Controller
 
     private function deleteImageFiles(Task $task)
     {
-        if ($task->img !== '') {
+        if ($task->attachment !== '') {
             Storage::delete([
-                'public/' . $task->img,
-                'public/' . $task->thumb
+                'public/' . $task->attachment,
             ]);
         }
     }

@@ -17,8 +17,7 @@ class TaskResource extends JsonResource
         return [
             'text'   => $this->text,
             'status' => $this->status,
-            'image'  => $this->img,
-            'thumb'  => $this->thumb,
+            'attachment'  => $this->attachment,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

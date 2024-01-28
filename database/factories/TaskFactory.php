@@ -20,8 +20,7 @@ class TaskFactory extends Factory
         return [
             'user_id' => User::factory(),
             'text' => $this->faker->paragraph(3, true),
-            'img' => $this->faker->imageUrl(),
-            'thumb' => $this->faker->image(),
+            'attachment' => $this->faker->imageUrl(),
             'status' => $this->faker->text()
         ];
     }
