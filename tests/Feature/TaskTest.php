@@ -15,30 +15,71 @@ class TaskTest extends TestCase
     public function test_show_task_of_authenticated_user()
     {
         $user = User::factory()->create();
-        $task = Task::factory()->create([
+
+        $task1 = Task::factory()->create([
             'user_id' => $user->id,
+            'text' => 'Task with status in_progress',
+            'status' => 'in_progress',
         ]);
+
+        $task2 = Task::factory()->create([
+            'user_id' => $user->id,
+            'text' => 'Task with status completed',
+            'status' => 'completed',
+        ]);
+
         Auth::login($user);
+
         $response = $this->get('/task');
         $response->assertStatus(200);
 
         $response->assertJson([
             'data' => [
                 [
-                    'text' => $task->text,
-                    'attachment' => $task->attachment,
+                    'text' => $task1->text,
+                    'attachment' => $task1->attachment,
+                ],
+                [
+                    'text' => $task2->text,
+                    'attachment' => $task2->attachment,
+                ],
+            ],
+        ]);
+
+        // Test with status filter
+        $response = $this->get('/task?statuses[]=in_progress');
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            'data' => [
+                [
+                    'text' => $task1->text,
+                    'attachment' => $task1->attachment,
+                    'status' => $task1->status,
+                ],
+            ],
+        ]);
+
+        // Test with search filter
+        $response = $this->get('/task?search=completed');
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            'data' => [
+                [
+                    'text' => $task2->text,
+                    'attachment' => $task2->attachment,
+                    'status' => 'completed',
                 ],
             ],
         ]);
     }
-
 
     public function test_show_task_of_unauthenticated_user()
     {
         $response = $this->get('/task');
         $response->assertStatus(302);
     }
-
 
     public function testStore()
     {

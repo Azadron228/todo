@@ -15,14 +15,9 @@ class Task extends Model
         'status'
     ];
 
-    public function scopeFilterStatus($query, $statuses)
+    public function filterStatus($statuses)
     {
-        return $query->whereIn('status', $statuses);
-    }
-
-    public function scopeSearchText($query, $text)
-    {
-        return $query->where('text', 'like', '%' . $text . '%');
+        return $tasks->whereIn('status', $statuses);
     }
 
     public function user()

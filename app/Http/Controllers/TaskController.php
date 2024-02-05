@@ -12,8 +12,19 @@ class TaskController extends Controller
 {
     public function index(Request $request)
     {
-        $tasks = $request->user()->tasks()->orderBy('id', 'desc')->paginate(5);
-        return TaskResource::collection($tasks);
+        $tasks = $request->user()->tasks();
+
+        if ($request->has('statuses')) {
+            $tasks->filterStatus($request->statuses);
+        }
+
+        if ($request->has('search')) {
+            $tasks->searchText($request->search);
+        }
+
+        $filteredTasks = $tasks->get();
+
+        return TaskResource::collection($filteredTasks);
     }
 
     public function show($id)
