@@ -25,32 +25,27 @@ class TaskController extends Controller
 
     public function store(TaskRequest $request)
     {
-        $task = $request->user()->tasks()->create([
-            'text' => $request->text,
-            'attachment' => '',
-            'status' => 'inProgress',
-        ]);
+        $data = $request->validated();
+        $data['attachment'] = '';
+        $data['status'] = 'inProgress';
+
+        $task = $request->user()->tasks()->create($data);
 
         return new TaskResource($task);
     }
 
-    public function update(TaskRequest $request)
-    {
-        $task = Task::findOrFail($request->id);
-
-        $task->update([
-            'text' => $request->text,
-            'status' => $request->status,
-        ]);
-
-        return new TaskResource($task);
-    }
-
-    public function destroy($id)
+    public function update(TaskRequest $request, $id)
     {
         $task = Task::findOrFail($id);
-        $this->deleteImageFiles($task);
+        $this->authorize('update', $task);
+        $task->update($request->validated());
+        return new TaskResource($task);
+    }
 
+    public function destroy(Task $task)
+    {
+        $this->authorize('delete', $task);
+        $this->deleteImageFiles($task);
         $task->delete();
 
         return response()->json('task deleted');
