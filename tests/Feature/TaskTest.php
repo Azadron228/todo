@@ -22,6 +22,8 @@ class TaskTest extends TestCase
             'status' => 'in_progress',
         ]);
 
+        sleep(1);
+
         $task2 = Task::factory()->create([
             'user_id' => $user->id,
             'text' => 'Task with status completed',
@@ -36,12 +38,29 @@ class TaskTest extends TestCase
         $response->assertJson([
             'data' => [
                 [
+                    'id'=>$task1->id,
                     'text' => $task1->text,
+                    'status'=> $task1->status,
                     'attachment' => $task1->attachment,
                 ],
                 [
+                    'id'=>$task2->id,
                     'text' => $task2->text,
                     'attachment' => $task2->attachment,
+                ],
+            ],
+        ]);
+
+        // Test with search filter
+        $response = $this->get("/task?search=completed");
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            'data' => [
+                [
+                    'text' => $task2->text,
+                    'attachment' => $task2->attachment,
+                    'status' => $task2->status,
                 ],
             ],
         ]);
@@ -73,6 +92,82 @@ class TaskTest extends TestCase
                 ],
             ],
         ]);
+
+        // Test with priority sorting (explicit ascending)
+        $response = $this->get('/task?priority=asc');
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            'data' => [
+                [
+                    'text' => $task2->text,
+                    'attachment' => $task2->attachment,
+                    'priority' => $task2->priority,
+                ],
+                [
+                    'text' => $task1->text,
+                    'attachment' => $task1->attachment,
+                    'priority' => $task1->priority,
+                ],
+            ],
+        ]);
+
+        // Test with priority sorting (descending)
+        $response = $this->get('/task?priority_order=desc');
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            'data' => [
+                [
+                    'text' => $task1->text,
+                    'attachment' => $task1->attachment,
+                    'priority' => $task1->priority,
+                ],
+                [
+                    'text' => $task2->text,
+                    'attachment' => $task2->attachment,
+                    'priority' => $task2->priority,
+                ],
+            ],
+        ]);
+
+        // Test with date sorting (explicit ascending)
+        $response = $this->get('/task?date=asc');
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            'data' => [
+                [
+                    'text' => $task2->text,
+                    'attachment' => $task2->attachment,
+                    'priority' => $task2->priority,
+                ],
+                [
+                    'text' => $task1->text,
+                    'attachment' => $task1->attachment,
+                    'priority' => $task1->priority,
+                ],
+            ],
+        ]);
+
+        // Test with date sorting (descending)
+        $response = $this->get('/task?date=desc');
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            'data' => [
+                [
+                    'text' => $task1->text,
+                    'attachment' => $task1->attachment,
+                    'priority' => $task1->priority,
+                ],
+                [
+                    'text' => $task2->text,
+                    'attachment' => $task2->attachment,
+                    'priority' => $task2->priority,
+                ],
+            ],
+        ]);
     }
 
     public function test_show_task_of_unauthenticated_user()
@@ -87,9 +182,9 @@ class TaskTest extends TestCase
         Auth::login($user);
         $task = [
             'text' => 'exampletext',
+            'priority' => '12'
         ];
         $response = $this->post('/task', $task);
-        // dd($response);
 
         $response->assertJson([
             'data' => [

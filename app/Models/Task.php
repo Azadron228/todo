@@ -12,7 +12,8 @@ class Task extends Model
     protected $fillable = [
         'text',
         'attachment',
-        'status'
+        'status',
+        'priority'
     ];
 
     public function scopeFilterStatus($query, $statuses)
@@ -23,6 +24,11 @@ class Task extends Model
     public function scopeSearchText($query, $text)
     {
         return $query->where('text', 'like', '%' . $text . '%');
+    }
+
+    public function scopeFilterPriority($query, $priorities)
+    {
+        return $query->whereIn('priority', $priorities);
     }
 
     public function user()

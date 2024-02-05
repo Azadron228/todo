@@ -23,7 +23,8 @@ class TaskRequest extends FormRequest
     {
         return [
             'text' => ['required','string', 'min:1'],
-            'status' => ['string', 'min:1']
+            'status' => ['string', 'min:1'],
+            'priority' => ['string', 'min:1'],
         ];
     }
 }

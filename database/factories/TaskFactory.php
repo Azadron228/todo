@@ -21,7 +21,8 @@ class TaskFactory extends Factory
             'user_id' => User::factory(),
             'text' => $this->faker->paragraph(3, true),
             'attachment' => $this->faker->imageUrl(),
-            'status' => $this->faker->text()
+            'status' => $this->faker->text(),
+            'priority' => $this->faker->text()
         ];
     }
 }

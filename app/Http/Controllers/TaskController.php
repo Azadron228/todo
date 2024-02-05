@@ -14,6 +14,9 @@ class TaskController extends Controller
     {
         $tasks = $request->user()->tasks();
 
+        $priorityOrder = $request->input('priority_order', 'asc');
+        $dateOrder = $request->input('date_order', 'asc');
+
         if ($request->has('statuses')) {
             $tasks->filterStatus($request->statuses);
         }
@@ -22,7 +25,17 @@ class TaskController extends Controller
             $tasks->searchText($request->search);
         }
 
-        $filteredTasks = $tasks->get();
+        if ($request->has('priority')) {
+            $priorityOrder = $request->input('priority') == 'asc' ? 'asc' : 'desc';
+        }
+
+        if ($request->has('date')) {
+            $dateOrder = $request->input('date') == 'asc' ? 'asc' : 'desc';
+        }
+
+        $filteredTasks =  $tasks->orderBy('priority', $priorityOrder)
+                                ->orderBy('created_at', $dateOrder)
+                                ->get();
 
         return TaskResource::collection($filteredTasks);
     }
@@ -39,6 +52,7 @@ class TaskController extends Controller
         $data = $request->validated();
         $data['attachment'] = '';
         $data['status'] = 'inProgress';
+        $data['priority'] = '1';
 
         $task = $request->user()->tasks()->create($data);
 

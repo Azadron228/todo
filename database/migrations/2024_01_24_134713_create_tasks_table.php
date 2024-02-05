@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('text');
             $table->string('attachment');
             $table->string('status');
+            $table->string('priority');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
