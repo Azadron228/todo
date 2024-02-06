@@ -22,8 +22,6 @@ class TaskTest extends TestCase
             'status' => 'in_progress',
         ]);
 
-        sleep(1);
-
         $task2 = Task::factory()->create([
             'user_id' => $user->id,
             'text' => 'Task with status completed',

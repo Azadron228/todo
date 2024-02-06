@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+Route::get('/', function () {
+    return "Hello";
+});
+
+
 Route::group(['middleware' => ['auth']], function () {
 
     Route::resource('/task', TaskController::class);
