@@ -90,7 +90,7 @@ php artisan serve
 			"id": 1,
 			"text": "task1",
 			"status": "in_progress",
-			"attachment": "",
+			"attachment": "public\/nE1l15SS924BPGmmzedYPkiB6Fb771QXNu0oq4Wz.png",
 			"created_at": "2024-02-07T13:03:36.000000Z",
 			"updated_at": "2024-02-07T13:03:36.000000Z"
 		},
@@ -168,7 +168,7 @@ php artisan serve
 		"id": 1,
 		"text": "task1",
 		"status": "in_progress",
-		"attachment": "",
+		"attachment": "public\/nE1l15SS924BPGmmzedYPkiB6Fb771QXNu0oq4Wz.png",
 		"created_at": "2024-02-07T13:03:36.000000Z",
 		"updated_at": "2024-02-07T13:03:36.000000Z"
 	}
@@ -189,7 +189,7 @@ php artisan serve
 		"id": 1,
 		"text": "Updated task",
 		"status": "done",
-		"attachment": "",
+		"attachment": "public\/nE1l15SS924BPGmmzedYPkiB6Fb771QXNu0oq4Wz.png",
 		"created_at": "2024-02-07T13:03:36.000000Z",
 		"updated_at": "2024-02-07T13:13:17.000000Z"
 	}
@@ -206,11 +206,10 @@ php artisan serve
 <details>
 <summary>Attachments</summary>
     
-    ### POST /task/{id}/attachments
-    ```json
-    [
-	"Attachment uploaded successfully."
-    ]
-    ```
-    
+### POST /task/{id}/attachments
+```json
+{
+	"message": "Attachment uploaded successfully."
+}
+```
 </details>
