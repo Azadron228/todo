@@ -1,66 +1,216 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Todo
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A basic todo app built for learning Laravel framework. Project covers essential features including user registration, CRUD operations, file upload, and filtering capabilities. The project is thoroughly tested with PHPUnit.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **User Registration:** Users can register for an account to manage their tasks.
+- **CRUD Operations:** Users can Create, Read, Update, and Delete tasks.
+- **File Upload:** Users can attach files to their tasks.
+- **Filtering:** Tasks can be filtered by priority, status, and date.
+- **PHPUnit Tests:** The entire project is covered with PHPUnit tests to ensure reliability and stability.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Technologies:
 
-## Learning Laravel
+* Programming Language: Php
+* Framework: Laravel
+* Databases: Sqlite
+* Testing: PhpUnit
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Installing
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```sh
+git clone https://github.com/Azadron228/todo.git
+cd todo
+composer install
+php artisan key:generate
+php artisan migrate
+php artisan serve
+```
 
-## Laravel Sponsors
+## Api Reference
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+<details>
+<summary>Auth</summary>
 
-### Premium Partners
+### POST: /login
+```json
+{
+  "email": "example@gmail.com",
+  "password": "123456789",
+  "password_confirmation": "123456789"
+}
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Response:
 
-## Contributing
+```json
+"successfull"
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### POST: /register
+```json
+{
+  "username": "Jotaro",
+  "email": "success",
+  "password":"123456789",
+  "password_confirmation": "123456789"
+}
+```
 
-## Code of Conduct
+### Response:
+```json
+[
+    "User Registered successfully"
+]
+```
+### POST: /user
+```json
+{
+	"id": 1,
+	"name": "Jotaro",
+	"email": "jojo@gmail.com",
+	"email_verified_at": null,
+	"created_at": "2024-02-07T12:57:23.000000Z",
+	"updated_at": "2024-02-07T12:57:23.000000Z"
+}
+```
+</details>
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+<details>
+<summary>Task CRUD</summary>
 
-## Security Vulnerabilities
+### GET: /task
+```json
+{
+	"data": [
+		{
+			"id": 1,
+			"text": "task1",
+			"status": "in_progress",
+			"attachment": "",
+			"created_at": "2024-02-07T13:03:36.000000Z",
+			"updated_at": "2024-02-07T13:03:36.000000Z"
+		},
+		{
+			"id": 2,
+			"text": "task2",
+			"status": "in_progress",
+			"attachment": "",
+			"created_at": "2024-02-07T13:03:48.000000Z",
+			"updated_at": "2024-02-07T13:03:48.000000Z"
+		}
+	],
+	"links": {
+		"first": "http:\/\/localhost:8000\/task?page=1",
+		"last": "http:\/\/localhost:8000\/task?page=1",
+		"prev": null,
+		"next": null
+	},
+	"meta": {
+		"current_page": 1,
+		"from": 1,
+		"last_page": 1,
+		"links": [
+			{
+				"url": null,
+				"label": "&laquo; Previous",
+				"active": false
+			},
+			{
+				"url": "http:\/\/localhost:8000\/task?page=1",
+				"label": "1",
+				"active": true
+			},
+			{
+				"url": null,
+				"label": "Next &raquo;",
+				"active": false
+			}
+		],
+		"path": "http:\/\/localhost:8000\/task",
+		"per_page": 15,
+		"to": 2,
+		"total": 2
+	}
+}
+```
+### POST /task
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```json
+{
+	"text": "task1"
+}
+```
 
-## License
+### Response:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```json
+{
+	"data": {
+		"id": 2,
+		"text": "task2",
+		"status": "in_progress",
+		"attachment": "",
+		"created_at": "2024-02-07T13:03:48.000000Z",
+		"updated_at": "2024-02-07T13:03:48.000000Z"
+	}
+}
+```
+### 
+
+### GET /task/{id}
+```json
+{
+	"data": {
+		"id": 1,
+		"text": "task1",
+		"status": "in_progress",
+		"attachment": "",
+		"created_at": "2024-02-07T13:03:36.000000Z",
+		"updated_at": "2024-02-07T13:03:36.000000Z"
+	}
+}
+```
+
+### PUT /task
+```json
+{
+	"text": "Updated task",
+	"status": "done"
+}
+```
+### Response:
+```json
+{
+	"data": {
+		"id": 1,
+		"text": "Updated task",
+		"status": "done",
+		"attachment": "",
+		"created_at": "2024-02-07T13:03:36.000000Z",
+		"updated_at": "2024-02-07T13:13:17.000000Z"
+	}
+}
+
+```
+### DELETE /task
+
+```json
+"task deleted"
+```
+</details>
+
+<details>
+<summary>Attachments</summary>
+    
+    ### POST /task/{id}/attachments
+    ```json
+    [
+	"Attachment uploaded successfully."
+    ]
+    ```
+    
+</details>
