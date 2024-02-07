@@ -30,8 +30,6 @@ class AuthController extends Controller
     {
         $attributes = $request->validated();
 
-        $attributes['password'] = Hash::make($attributes['password']);
-
         $user = User::create($attributes);
         Auth::login($user);
 
