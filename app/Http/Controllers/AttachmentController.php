@@ -9,21 +9,25 @@ use Illuminate\Support\Facades\Storage;
 
 class AttachmentController extends Controller
 {
-    public function upload(Request $request, $todoId)
+    public function upload(Request $request, $taskId)
     {
         $request->validate([
             'attachment' => 'required|file|mimes:pdf,doc,docx,jpg,jpeg,png',
         ]);
 
-        $todo = Task::find($todoId);
+        $task = Task::find($taskId);
 
-        if ($todo) {
+        if ($task) {
             $attachmentPath = Storage::putFile('public', $request->file('attachment'));
 
-            $todo->attachments()->create([
+            $task->attachments()->create([
                 'path' => $attachmentPath,
                 'original_name' => $request->file('attachment')->getClientOriginalName(),
             ]);
+
+            $task->update([
+                    'attachment' => $attachmentPath,
+                ]);
 
             return response()->json(['Attachment uploaded successfully.']);
         } else {

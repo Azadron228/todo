@@ -17,12 +17,12 @@ class RegisterRequest extends FormRequest
         return true;
     }
 
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            'password' => Hash::make($this->password),
-        ]);
-    }
+    // protected function prepareForValidation()
+    // {
+    //     $this->merge([
+    //         'password' => Hash::make($this->password),
+    //     ]);
+    // }
 
     /**
      * Get the validation rules that apply to the request.
