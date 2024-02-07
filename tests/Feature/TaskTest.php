@@ -187,7 +187,7 @@ class TaskTest extends TestCase
         $response->assertJson([
             'data' => [
                 'text' => 'exampletext',
-                'status' => 'inProgress',
+                'status' => 'in_progress',
                 'attachment' => '',
             ],
         ]);

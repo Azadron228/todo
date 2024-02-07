@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Task extends Model
 {
@@ -16,19 +17,51 @@ class Task extends Model
         'priority'
     ];
 
-    public function scopeFilterStatus($query, $statuses)
+    protected $attributes = [
+        'attachment' => '',
+        'status' => 'in_progress',
+        'priority' => '1',
+    ];
+
+    public function scopeOfStatus(Builder $query, array $statuses): void
     {
-        return $query->whereIn('status', $statuses);
+        $query->whereIn('status', $statuses);
     }
 
-    public function scopeSearchText($query, $text)
+    public function scopeOfText(Builder $query, string $text): void
     {
-        return $query->where('text', 'like', '%' . $text . '%');
+        $query->where('text', 'like', '%' . $text . '%');
     }
 
-    public function scopeFilterPriority($query, $priorities)
+    public function scopeOfPriority(Builder $query, array $priorities): void
     {
-        return $query->whereIn('priority', $priorities);
+        $query->whereIn('priority', $priorities);
+    }
+
+    public function scopeFilterAndOrder($query, $request)
+    {
+        $priorityOrder = $request->input('priority_order', 'asc');
+        $dateOrder = $request->input('date_order', 'asc');
+
+        if ($request->has('statuses')) {
+            $query->whereIn('status', $request->statuses);
+        }
+
+        if ($request->has('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->has('priority')) {
+            $priorityOrder = $request->input('priority') == 'asc' ? 'asc' : 'desc';
+        }
+
+        if ($request->has('date')) {
+            $dateOrder = $request->input('date') == 'asc' ? 'asc' : 'desc';
+        }
+
+        return $query->where('user_id', $request->user()->id)
+            ->orderBy('priority', $priorityOrder)
+            ->orderBy('updated_at', $dateOrder);
     }
 
     public function user()

@@ -12,30 +12,7 @@ class TaskController extends Controller
 {
     public function index(Request $request)
     {
-        $tasks = $request->user()->tasks();
-
-        $priorityOrder = $request->input('priority_order', 'asc');
-        $dateOrder = $request->input('date_order', 'asc');
-
-        if ($request->has('statuses')) {
-            $tasks->filterStatus($request->statuses);
-        }
-
-        if ($request->has('search')) {
-            $tasks->searchText($request->search);
-        }
-
-        if ($request->has('priority')) {
-            $priorityOrder = $request->input('priority') == 'asc' ? 'asc' : 'desc';
-        }
-
-        if ($request->has('date')) {
-            $dateOrder = $request->input('date') == 'asc' ? 'asc' : 'desc';
-        }
-
-        $filteredTasks =  $tasks->orderBy('priority', $priorityOrder)
-                                ->orderBy('created_at', $dateOrder)
-                                ->get();
+        $filteredTasks = Task::filterAndOrder($request)->paginate();
 
         return TaskResource::collection($filteredTasks);
     }
@@ -50,10 +27,6 @@ class TaskController extends Controller
     public function store(TaskRequest $request)
     {
         $data = $request->validated();
-        $data['attachment'] = '';
-        $data['status'] = 'inProgress';
-        $data['priority'] = '1';
-
         $task = $request->user()->tasks()->create($data);
 
         return new TaskResource($task);

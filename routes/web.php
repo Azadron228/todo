@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\TaskController;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +21,9 @@ Route::get('/', function () {
     return "Hello";
 });
 
+Route::middleware('auth')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
 Route::group(['middleware' => ['auth']], function () {
 
@@ -28,4 +32,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/task/{task}/attachments', [AttachmentController::class, 'upload'])->name('attachments.upload');
     Route::get('/attachments/{attachment}', [AttachmentController::class, 'download'])->name('attachments.download');
 });
+
 require __DIR__ . '/auth.php';

@@ -14,9 +14,10 @@ class AuthTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->post('/login', [
+        $this->post('/login', [
             'email' => $user->email,
             'password' => 'password',
+            'password_confirmation' => 'password',
         ]);
 
         $this->assertauthenticated();
